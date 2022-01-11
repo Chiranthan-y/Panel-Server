@@ -12,9 +12,9 @@ const Router = express.Router();
 
 Router.param('userID', getUserById);
 
-Router.get('/', isAuthenticated, isSignedIn, isAdmin, getAllUsers);
-Router.get('/:userID', isAuthenticated, isSignedIn, getUser);
-Router.delete('/:userID', isAuthenticated, isSignedIn, isAdmin, deleteUser);
-Router.put('/:userID', isAuthenticated, isSignedIn, updateUser);
+Router.get('/:userID/all', isSignedIn, isAuthenticated, isAdmin, getAllUsers);
+Router.get('/:userID', isSignedIn, isAuthenticated, getUser);
+Router.delete('/:userID', isSignedIn, isAuthenticated, isAdmin, deleteUser);
+Router.put('/:userID', isSignedIn, isAuthenticated, updateUser);
 
 module.exports = Router;

@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken');
 const expressWebToken = require('express-jwt');
 
 exports.login = (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
-  User.findOne({ email }, (err, user) => {
+  User.findOne({ username }, (err, user) => {
     if (err) {
       return res.status(500).json({
         error: err,
@@ -26,21 +26,20 @@ exports.login = (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
     res.cookie('token', token, { expire: new Date() + 9999 });
 
-    const { _id, name, email, role } = user;
+    const { _id, username, customerType } = user;
     return res.status(200).json({
       message: 'Login successfull',
       token,
-      user: { _id, name, email, role },
+      user: { _id, username, customerType },
     });
   });
 };
 
 exports.register = (req, res) => {
-  const { email, password, name } = req.body;
+  const { username, password } = req.body;
   const newUser = new User({
-    email,
     password,
-    name,
+    username,
   });
 
   newUser.save((err, user) => {
@@ -68,9 +67,13 @@ exports.isSignedIn = expressWebToken({
 
 exports.isAuthenticated = (req, res, next) => {
   let checker = req.profile && req.auth && req.profile._id == req.auth.id;
+  console.log('profile:  ', req.profile);
+  console.log('auth:  ', req.auth);
+  console.log('checker:  ', checker);
+
   if (!checker) {
     return res.status(403).json({
-      error: 'Access Denied',
+      error: 'You are not authorized to perform this action',
     });
   }
   next();
@@ -79,8 +82,10 @@ exports.isAuthenticated = (req, res, next) => {
 exports.isAdmin = (req, res, next) => {
   if (req.profile.role === 0) {
     return res.status(403).json({
-      error: 'You are not authorized to perform this action',
+      error: 'Access Denied',
     });
   }
-  next();
+  if (req.profile.role === 1) {
+    next();
+  }
 };

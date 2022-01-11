@@ -1,4 +1,5 @@
 const User = require('./../models/user');
+const _ = require('lodash');
 
 exports.getUserById = (req, res, next, id) => {
   User.findById(id).exec((err, user) => {

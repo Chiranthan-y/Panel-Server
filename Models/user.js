@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const { v1: uuid } = require('uuid');
 
+const OrderSchema = require('./order');
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -11,6 +13,12 @@ const userSchema = new mongoose.Schema({
   en_password: {
     type: String,
     required: true,
+  },
+  orders: [OrderSchema],
+  customerType: {
+    type: String,
+    enum: ['premium', 'normal'],
+    default: 'normal',
   },
   salt: {
     type: String,
@@ -31,6 +39,7 @@ userSchema
   .get(() => {
     return this._password;
   });
+
 userSchema.methods.authenticate = function (plainText) {
   return this.encryptPassword(plainText) === this.en_password;
 };
