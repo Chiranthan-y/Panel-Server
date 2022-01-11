@@ -36,6 +36,7 @@ Router.get(
   getMedicine
 );
 
+//!get all
 Router.get('/user/:userId/all', isSignedIn, isAuthenticated, getAllMedicine);
 
 //!delete

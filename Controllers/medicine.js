@@ -52,7 +52,7 @@ exports.getAllMedicine = (req, res) => {
   Medicine.find().exec((err, medicines) => {
     if (err) {
       return res.status(400).json({
-        error: err,
+        error: 'Medicines not found',
       });
     }
     res.json(medicines);
@@ -64,14 +64,14 @@ exports.getMedicine = (req, res) => {
 };
 
 exports.deleteMedicine = (req, res) => {
-  let medicine = req.medicine;
-  medicine.remove((err, deletedMedicine) => {
+  let { id } = req.body;
+  Medicine.findByIdAndRemove(id, (err, medicine) => {
     if (err) {
       return res.status(400).json({
-        error: 'Failed to delete medicine',
+        error: 'Medicine not found',
       });
     }
-    res.status(200).json({
+    res.json({
       message: 'Medicine deleted successfully',
     });
   });

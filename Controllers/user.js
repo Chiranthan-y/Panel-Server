@@ -30,11 +30,11 @@ exports.getUser = (req, res) => {
 };
 
 exports.deleteUser = (req, res) => {
-  let user = req.profile;
-  user.remove((err, user) => {
+  let { id } = req.body;
+  User.findByIdAndRemove(id, (err, user) => {
     if (err) {
       return res.status(400).json({
-        error: err,
+        error: 'User not found',
       });
     }
     res.json({

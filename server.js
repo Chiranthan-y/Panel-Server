@@ -12,6 +12,7 @@ const morgan = require('morgan');
 const AuthRouter = require('./routes/auth');
 const UserRouter = require('./routes/user');
 const MedicineRouter = require('./routes/medicine');
+const CompanyRouter = require('./routes/company');
 
 app.listen(process.env.PORT, () => {
   console.log('Server is up and running');
@@ -42,3 +43,4 @@ app.get('/', (req, res) => {
 app.use('/api/auth/', AuthRouter);
 app.use('/api/user/', UserRouter);
 app.use('/api/medicine/', MedicineRouter);
+app.use('/api/company/', CompanyRouter);

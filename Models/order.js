@@ -10,4 +10,15 @@ exports.OrderSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  medicineId: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Medicine',
+  },
+  medicineName: {
+    type: String,
+    required: true,
+  },
+  amountpaid: {
+    type: Number,
+  },
 });
