@@ -10,7 +10,7 @@ exports.getMedicineById = (req, res, next, id) => {
         error: 'Medicine not found in DB',
       });
     }
-    req.medicine = medicine;
+
     next();
   });
 };
@@ -48,19 +48,22 @@ exports.createMedicine = (req, res) => {
   });
 };
 
-exports.getAllMedicine = (req, res) => {
-  Medicine.find().exec((err, medicines) => {
-    if (err) {
-      return res.status(400).json({
-        error: 'Medicines not found',
-      });
-    }
-    res.json(medicines);
+exports.getMedicines = (req, res) => {
+  res.json({
+    message: 'pe punda mane wrk aie thola',
   });
 };
 
 exports.getMedicine = (req, res) => {
-  return res.json(req.medicine);
+  const id = req.params.medicineId;
+  Medicine.findById(id).exec((err, medicine) => {
+    if (err) {
+      return res.status(400).json({
+        error: 'Medicine not found in DB',
+      });
+    }
+    res.json(medicine);
+  });
 };
 
 exports.deleteMedicine = (req, res) => {
