@@ -10,7 +10,7 @@ exports.getMedicineById = (req, res, next, id) => {
         error: 'Medicine not found in DB',
       });
     }
-
+    req.medicine = medicine;
     next();
   });
 };
@@ -18,7 +18,6 @@ exports.getMedicineById = (req, res, next, id) => {
 exports.createMedicine = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
-
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
@@ -26,17 +25,16 @@ exports.createMedicine = (req, res) => {
       });
     }
     let medicine = new Medicine(fields);
-
+    console.log(files);
     if (files.photo) {
       if (files.photo.size > 3000000) {
         return res.status(400).json({
           error: 'Image should be less than 3mb in size',
         });
       }
-      medicine.photo.data = fs.readFileSync(files.photo.path);
+      medicine.photo = fs.readFileSync(files.photo.filepath);
       medicine.photo.contentType = files.photo.type;
     }
-
     medicine.save((err, result) => {
       if (err) {
         return res.status(400).json({
@@ -49,8 +47,13 @@ exports.createMedicine = (req, res) => {
 };
 
 exports.getMedicines = (req, res) => {
-  res.json({
-    message: 'pe punda mane wrk aie thola',
+  Medicine.find().exec((err, medicines) => {
+    if (err) {
+      return res.status(400).json({
+        error: 'No medicines in DB',
+      });
+    }
+    res.status(200).json(medicines);
   });
 };
 
@@ -67,7 +70,7 @@ exports.getMedicine = (req, res) => {
 };
 
 exports.deleteMedicine = (req, res) => {
-  let { id } = req.body;
+  let id = req.params.medicineId;
   Medicine.findByIdAndRemove(id, (err, medicine) => {
     if (err) {
       return res.status(400).json({
@@ -99,7 +102,7 @@ exports.updateMedicine = (req, res) => {
           error: 'Image should be less than 3mb in size',
         });
       }
-      medicine.photo.data = fs.readFileSync(files.photo.path);
+      medicine.photo = fs.readFileSync(files.photo.filepath);
       medicine.photo.contentType = files.photo.type;
     }
 

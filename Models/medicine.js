@@ -13,6 +13,10 @@ const medicineSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Company',
   },
+  category: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Category',
+  },
   price: {
     type: Number,
     required: true,

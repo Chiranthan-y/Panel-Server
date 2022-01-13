@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const { v1: uuid } = require('uuid');
 
-const OrderSchema = require('./order');
-
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -14,7 +12,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  orders: [OrderSchema],
   customerType: {
     type: String,
     enum: ['premium', 'normal'],

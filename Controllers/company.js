@@ -7,7 +7,7 @@ exports.getCompanyById = (req, res, next, id) => {
         error: 'Company not found in DB',
       });
     }
-
+    req.company = company;
     next();
   });
 };
@@ -25,25 +25,14 @@ exports.createCompany = (req, res) => {
 };
 
 exports.getAllCompanies = (req, res) => {
-  Company.aggregate([{ $match: {} }]).exec((err, companies) => {
+  Company.find().exec((err, companies) => {
     if (err) {
       return res.status(400).json({
         error: 'No companies found',
       });
     }
-    console.log({ err });
-    console.log({ companies });
-    return res.json(companies);
+    res.json(companies);
   });
-
-  // Company.find().exec((err, companies) => {
-  //   if (err) {
-  //     return res.status(400).json({
-  //       error: 'No companies found',
-  //     });
-  //   }
-  //   res.json(companies);
-  // });
 };
 
 exports.getCompany = (req, res) => {

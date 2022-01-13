@@ -11,6 +11,9 @@ const morgan = require('morgan');
 
 const AuthRouter = require('./routes/auth');
 const UserRouter = require('./routes/user');
+const MedicineRouter = require('./routes/medicine');
+const CompanyRouter = require('./routes/company');
+const CategoryRouter = require('./routes/category');
 
 app.listen(process.env.PORT, () => {
   console.log('Server is up and running');
@@ -38,5 +41,8 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/auth/', AuthRouter);
-app.use('/api/user/', UserRouter);
+app.use('/api/auth', AuthRouter);
+app.use('/api/user', UserRouter);
+app.use('/api', MedicineRouter);
+app.use('/api', CompanyRouter);
+app.use('/api', CategoryRouter);
