@@ -23,7 +23,9 @@ const medicineSchema = new mongoose.Schema({
   },
   photo: {
     type: Buffer,
-    contentType: String,
+    contentType: {
+      type: String,
+    },
   },
   offer: {
     type: Number,

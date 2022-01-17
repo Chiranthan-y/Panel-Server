@@ -1,32 +1,20 @@
 const express = require('express');
 const Router = express.Router();
 const { getUserById } = require('../Controllers/user');
-const { isAuthenticated, isAdmin, isSignedIn } = require('../Controllers/auth');
 const {
   getCompanyById,
-  getAllCompanies,
   getCompany,
   createCompany,
   updateCompany,
+  getAllCompanies,
   deleteCompany,
 } = require('../Controllers/company');
+
+const { isAdmin, isAuthenticated, isSignedIn } = require('../Controllers/auth');
 
 Router.param('userId', getUserById);
 Router.param('companyId', getCompanyById);
 
-Router.get(
-  '/:userId/company/all',
-  isSignedIn,
-  isAuthenticated,
-  isAdmin,
-  getAllCompanies
-);
-Router.get(
-  '/user/:userId/company/:companyId',
-  isSignedIn,
-  isAuthenticated,
-  getCompany
-);
 Router.post(
   '/user/:userId/company/new',
   isSignedIn,
@@ -34,19 +22,31 @@ Router.post(
   isAdmin,
   createCompany
 );
+
+Router.get(
+  '/user/:userId/company/:companyId',
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  getCompany
+);
+
 Router.put(
-  'user/:userId/company/:companyId',
+  '/user/:userId/company/:companyId',
   isSignedIn,
   isAuthenticated,
   isAdmin,
   updateCompany
 );
+
 Router.delete(
-  'user/:userId/company/:companyId',
+  '/user/:userId/company/:companyId',
   isSignedIn,
   isAuthenticated,
   isAdmin,
   deleteCompany
 );
+
+Router.get('/company', getAllCompanies);
 
 module.exports = Router;

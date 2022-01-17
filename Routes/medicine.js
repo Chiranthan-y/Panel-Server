@@ -8,6 +8,7 @@ const {
   createMedicine,
   updateMedicine,
   deleteMedicine,
+  getMedicinePhoto,
 } = require('./../Controllers/medicine');
 const {
   isAuthenticated,
@@ -18,7 +19,7 @@ const {
 Router.param('userId', getUserById);
 Router.param('medicineId', getMedicineById);
 
-Router.get('/user/:userId/medicine', isSignedIn, isAuthenticated, getMedicines);
+Router.get('/medicine', getMedicines);
 
 Router.post(
   '/user/:userId/medicine/new',
@@ -26,6 +27,8 @@ Router.post(
   isAuthenticated,
   createMedicine
 );
+
+Router.get('/medicine/:medicineId/photo', getMedicinePhoto);
 
 Router.get(
   '/user/:userId/medicine/:medicineId',

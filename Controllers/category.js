@@ -1,41 +1,28 @@
+const Category = require('./../Models/category');
+
 exports.getCategoryById = (req, res, next, id) => {
-  Category.findById(id)
-    .exec()
-    .then((category) => {
-      if (category) {
-        req.category = category;
-        next();
-      } else {
-        return res.status(404).json({
-          message: 'Category not found',
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: err,
+  Category.findById(id).exec((err, category) => {
+    if (err) {
+      return res.status(400).json({
+        error: 'Category not found',
       });
-    });
+    }
+    req.category = category;
+    next();
+  });
 };
 
 exports.createCategory = (req, res) => {
-  const category = new Category({
-    name: req.body.name,
+  const cate = req.body;
+  const category = new Category(cate);
+  category.save((err, category) => {
+    if (err) {
+      return res.status(400).json({
+        error: 'Not able to save category',
+      });
+    }
+    res.json(category);
   });
-  category
-    .save()
-    .then((result) => {
-      console.log(result);
-      res.status(201).json({
-        message: 'Category created',
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: err,
-      });
-    });
 };
 
 exports.deleteCategory = (req, res) => {
@@ -56,17 +43,12 @@ exports.deleteCategory = (req, res) => {
 };
 
 exports.getAllCategories = (req, res) => {
-  Category.find()
-    .exec()
-    .then((categories) => {
-      res.status(200).json({
-        categories: categories,
+  Category.find().exec((err, categories) => {
+    if (err) {
+      return res.status(400).json({
+        error: 'No categories found',
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: err,
-      });
-    });
+    }
+    res.json(categories);
+  });
 };
