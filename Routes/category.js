@@ -12,6 +12,7 @@ const {
   getCategoryById,
   createCategory,
   getAllCategories,
+  deleteCategory,
 } = require('./../Controllers/category');
 
 Router.param('userId', getUserById);
@@ -26,5 +27,12 @@ Router.post(
 );
 
 Router.get('/category', getAllCategories);
+Router.delete(
+  '/user/:userId/category/:categoryId',
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  deleteCategory
+);
 
 module.exports = Router;

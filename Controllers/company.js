@@ -56,8 +56,8 @@ exports.updateCompany = (req, res) => {
 };
 
 exports.deleteCompany = (req, res) => {
-  const company = req.company;
-  company.remove((err, deletedCompany) => {
+  const id = req.params.companyId;
+  Company.findByIdAndDelete(id, (err, company) => {
     if (err) {
       return res.status(400).json({
         error: 'Company not deleted',

@@ -14,6 +14,7 @@ const UserRouter = require('./Routes/user');
 const MedicineRouter = require('./Routes/medicine');
 const CategoryRouter = require('./Routes/category');
 const CompanyRouter = require('./Routes/company');
+const PaymentRouter = require('./Routes/payments');
 app.listen(process.env.PORT, () => {
   console.log('Server is up and running');
 });
@@ -45,3 +46,4 @@ app.use('/api/user', UserRouter);
 app.use('/api', MedicineRouter);
 app.use('/api', CategoryRouter);
 app.use('/api', CompanyRouter);
+app.use('/api', PaymentRouter);

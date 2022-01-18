@@ -9,6 +9,7 @@ const {
   updateMedicine,
   deleteMedicine,
   getMedicinePhoto,
+  getMedicineByCategory,
 } = require('./../Controllers/medicine');
 const {
   isAuthenticated,
@@ -16,8 +17,11 @@ const {
   isAdmin,
 } = require('./../Controllers/auth');
 
+const { getCategoryById } = require('./../Controllers/category');
+
 Router.param('userId', getUserById);
 Router.param('medicineId', getMedicineById);
+Router.param('categoryId', getCategoryById);
 
 Router.get('/medicine', getMedicines);
 
@@ -50,6 +54,14 @@ Router.delete(
   isAuthenticated,
   isAdmin,
   deleteMedicine
+);
+
+Router.get(
+  'user/:userId/category/:categoryId/',
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  getMedicineByCategory
 );
 
 module.exports = Router;

@@ -26,7 +26,7 @@ exports.createCategory = (req, res) => {
 };
 
 exports.deleteCategory = (req, res) => {
-  const id = req.body.id;
+  const id = req.params.categoryId;
   Category.findByIdAndDelete(id)
     .exec()
     .then((result) => {
